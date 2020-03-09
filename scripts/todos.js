@@ -15,7 +15,7 @@ class Todo{
             this.todoList.push(todoItem);
         };
         this.deleteTodo = (index) => {
-            this.todoList.splice(index);
+            this.todoList.splice(index, 1);
         }
         this.updateTodoDisplay = () => {
             todoListDisplay.innerHTML = "<ul>";
