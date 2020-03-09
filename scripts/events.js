@@ -13,14 +13,14 @@ function addCalendarControllerEvents(){
         //update month and year
         selectedDate.nextMonth();
         //update calendar
-        showCalendar(selectedDate.month, selectedDate.year);
+        showCalendar(true);
     });
 
     previousButton.addEventListener("click", () => {
         //update month and year
         selectedDate.previousMonth();
         //update calendar
-        showCalendar(selectedDate.month, selectedDate.year);
+        showCalendar(true);
     });
 }
 

@@ -9,7 +9,7 @@ addDateSelectionEvents();
 addTodosEvents();
 
 //On visiting the Calendar-App show calendar corresponding to the current date
-showCalendar(currentDate.month, currentDate.year);
+showCalendar(true);
 selectDate();
 updateSelectedDateDisplay();
 

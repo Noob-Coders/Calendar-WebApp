@@ -34,7 +34,7 @@ function showCalendar(changeSelectedDate){
         });
     }
 
-    while(currentDate < days){
+    while(currentDate <= days){
         calendarDates += "<tr>";
         for(var i=0;i<7;i++){
             //insert blank cells in table where date is not to be filled
