@@ -8,13 +8,60 @@ h1{
 
 table{
     font-size: 1.2rem;
-    margin: auto;
+    margin: 20px auto;
+    text-align: center;
 }
+
+td{
+    cursor: pointer;
+    padding: 7px;
+    border-radius: 50%;
+}
+
+td:hover{
+    background-color: #DDD;
+}
+
+td.empty{
+    cursor: default;
+}
+
+td.empty:hover{
+    background-color: white;
+}
+
 
 .controller{
     text-align: center;
 }
 
-.active{
-    background-color: #AAA;
+td.active{
+    background-color: rgba(21, 105, 201, 0.3);
+    transition: 0.4s;
+}
+
+td.selected{
+    background-color: rgba(21, 105, 201, 1);
+    color: white;
+    transition: 0.4s;
+}
+
+td.todohere{
+    border: solid 1px black;
+}
+
+.dot{
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background-color: red;
+    position: absolute;
+}
+
+.deleteTodo{
+    cursor: pointer;
+}
+
+.nodisplay{
+    display: none;
 }
