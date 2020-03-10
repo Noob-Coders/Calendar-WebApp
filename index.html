@@ -1,47 +1,55 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link type="text/css" rel="stylesheet" href="style.css">
     <link href="https://fonts.googleapis.com/css?family=Roboto&display=swap" rel="stylesheet">
+    
     <title>Calendar App</title>
 </head>
+
 <body>
-    <h1>Calendar</h1>
+    <div class="whole">
+        <h1>Calendar</h1>
 
-    <!-- Placeholder table for calendar -->
-    <div class="container">
-        <div class="controller">
-            <button id="previous">Previous</button>
-            <span class="current"></span>
-            <button id="next">Next</button>
+        <!-- Placeholder table for calendar -->
+        <div class="container">
+            <div class="controller">
+                <button class="button" id="previous">Previous</button>
+                <span class="current"></span>
+                <button class="button" id="next">Next</button>
+            </div>
+            <table>
+                <thead>
+                    <tr>
+                        <th>S</th>
+                        <th>M</th>
+                        <th>T</th>
+                        <th>W</th>
+                        <th>T</th>
+                        <th>F</th>
+                        <th>S</th>
+                    </tr>
+                </thead>
+                <tbody>
+
+                </tbody>
+            </table>
         </div>
-        <table>
-            <thead>
-                <tr>
-                    <th>S</th>
-                    <th>M</th>
-                    <th>T</th>
-                    <th>W</th>
-                    <th>T</th>
-                    <th>F</th>
-                    <th>S</th>
-                </tr>
-            </thead>
-            <tbody>
 
-            </tbody>
-        </table>
+        <h3 id="selectedDateDisplay"></h3>
+
+        <input type="text" placeholder="Todo item" id="todoItem">
+        <button id="addTodo">Add Todo</button>
+        <div id="todoListDisplay"></div>
+
+        <script src="https://code.jquery.com/jquery-3.4.1.min.js"
+            integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+        <script type="module" src="scripts//main.js"></script>
+
     </div>
-    
-    <h3 id="selectedDateDisplay"></h3>
-    
-    <input type="text" placeholder="Todo item" id="todoItem">
-    <button id="addTodo">Add Todo</button>
-    <div id="todoListDisplay"></div>
-
-    <script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
-    <script type="module" src="scripts//main.js"></script>
 </body>
+
 </html>
