@@ -1,10 +1,125 @@
-body{
-    font-family: 'Roboto', sans-serif;
-    background-color: #e1f4f3;
+html, body{
+    height: calc(100% - 40px);
 }
+
+body{
+    background-color: rgb(125, 174, 197);
+    font-family: 'Bellota Text', sans-serif;
+    padding: 0;
+    margin: 0;
+}
+
+.main{
+    margin: 40px;
+    height: 100%;
+    background-color: white;
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+}
+
+aside{
+    display: grid;
+    grid-template-rows: 2fr 3fr;
+}
+
+.weatherContainer{
+    width: 100%;
+    background: url("https://images.unsplash.com/photo-1504608524841-42fe6f032b4b?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1402&q=80");
+    background-position: center;
+    background-size: cover;
+    margin: 0;
+    color: white;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.weatherContainer #location{
+    font-size: 1.3rem;
+    margin:0;
+}
+
+.weatherContainer #temperature{
+    font-size: 5rem;
+    margin: 0px;
+    margin-left: 15px;
+    font-weight: 300;
+}
+
+.todoContainer{
+    background-color: rgb(255, 77, 111);
+    color: white;
+    padding: 0;
+}
+
+.todoContainer h3{
+    margin: 15px;
+    text-align: center;/*
+    line-height: 2rem;*/
+}
+
+.fa-table{
+    font-size: 1.5rem;
+}
+
+
+.todoContainer #todoForm{
+    margin: 20px 10px;
+    padding: 0;
+    display: grid;
+    grid-template-columns: auto 75px;
+    /*
+    position: fixed;
+    bottom: 0;
+    left: 0;*/
+}
+
+.todoContainer #todoForm #todoItem{
+    outline: none;
+    margin: 0;
+    padding: 7px;
+    background: none;
+    border: none;
+    color: white;
+    transition: 0.2s;
+    font-size: 0.9rem;
+    border-bottom: 2px solid #FFFA;
+}
+
+::placeholder{
+    color: #FFFA;
+    opacity: 0.8;
+}
+
+.todoContainer #todoForm #todoItem:focus{
+    border-bottom: 2px solid white;
+}
+
+.todoContainer #todoForm #addTodo{
+    display: inline-block;
+    margin: 0;
+    outline: none;
+    padding: 7px;
+    font-size: 0.8rem;
+    border: 2px solid white;
+    background: none;
+    color: white;
+    transition: 0.2s;
+    cursor: pointer;
+}
+
+.todoContainer #todoForm #addTodo:hover, .todoContainer #todoForm #addTodo:focus{
+    border: 2px solid white;
+    background: white;
+    color: rgb(255, 77, 111);
+}
+
+
+
 .whole{
     text-align: center;
-   
 }
 
 h1{
@@ -19,7 +134,7 @@ table{
 
 td{
     cursor: pointer;
-    padding: 7px;
+    padding: 7px 8px;
     border-radius: 50%;
 }
 
@@ -32,7 +147,7 @@ td.empty{
 }
 
 td.empty:hover{
-    background-color: white;
+    background-color: #e1f4f3;
 }
 
 
@@ -92,7 +207,7 @@ td.todohere{
     background-color: #555555;
     color: white;
   }
-
+/*
   #addTodo{
     background-color: white; 
     color: black; 
@@ -111,3 +226,4 @@ td.todohere{
     background-color: #f44336;
     color: white;
   }
+  */

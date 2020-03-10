@@ -28,7 +28,7 @@ function addCalendarControllerEvents(){
 function updateSelectedDateDisplay(){
     //Update selected date displayed on the screen
     var selectedDateDisplay = document.querySelector("#selectedDateDisplay");
-    selectedDateDisplay.textContent = `${selectedDate.date} ${months[selectedDate.month]} ${days[new Date(selectedDate.year, selectedDate.month, selectedDate.date).getDay()]}`;
+    selectedDateDisplay.innerHTML = `<i class="fas fa-table"></i> ${selectedDate.date} ${months[selectedDate.month]} ${days[new Date(selectedDate.year, selectedDate.month, selectedDate.date).getDay()]}`;
 }
 
 function selectDate(date, month, year){

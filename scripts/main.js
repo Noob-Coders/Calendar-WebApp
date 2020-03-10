@@ -1,5 +1,3 @@
-import { currentDate } from "./custom_date.js";
-import { todo } from "./todos.js";
 import { showCalendar } from "./show_calendar.js";
 import { addCalendarControllerEvents, addDateSelectionEvents, updateSelectedDateDisplay, addTodosEvents, selectDate } from "./events.js";
 
