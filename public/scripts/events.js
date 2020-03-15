@@ -63,7 +63,7 @@ function addTodosEvents(){
     var todoItem = document.querySelector("#todoItem");
     var todoList = document.querySelector("#todoListDisplay");
 
-    addTodo.addEventListener("click", () => {
+    function newTodo(){
         if(todoItem.value !== ""){
             var id = `date${selectedDate.date}${selectedDate.month}${selectedDate.year}`;
             var dot = "<span class='dot'></span>";
@@ -75,6 +75,16 @@ function addTodosEvents(){
             todoItem.value = "";
             todo.updateTodoDisplay();
         }
+    }
+
+    todoItem.addEventListener("keypress", (event) => {
+        if(event.keyCode === 13){
+            newTodo();
+        }
+    })
+
+    addTodo.addEventListener("click", () => {
+        newTodo();
     });
 
 
