@@ -1,0 +1,63 @@
+<%- include("partials/header", { stylesheet: "main.css" }) %>
+
+<section class="main">
+    <aside>
+        <div class="weatherContainer">
+            <p id="location">New Delhi, India</p>
+            <p id="temperature">28&deg</p>
+        </div>
+
+        <div class="todoContainer">
+            <h3 id="selectedDateDisplay"></h3>
+            <div id="todoForm">
+                <input type="text" placeholder="Todo item" id="todoItem">
+                <button id="addTodo">Add Todo</button>
+            </div>
+
+            <div id="todoListDisplay"><ul></ul></div>
+        </div>
+    </aside>
+
+    <section class="whole">
+        <div class="head">
+            <h1>Calendar</h1>
+            <div class="user">
+                <span class="username"><%= userName %></span>
+                <img src="graphics/avatar-blue.svg" alt="">
+            </div>
+        </div>
+        <!-- Placeholder table for calendar -->
+        <div class="container">
+            <div class="controller">
+                <button class="button" id="previous"><i class="fas fa-chevron-left"></i></button>
+                <span class="current"></span>
+                <button class="button" id="next"><i class="fas fa-chevron-right"></i></button>
+            </div>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Sun</th>
+                        <th>Mon</th>
+                        <th>Tue</th>
+                        <th>Wed</th>
+                        <th>Thu</th>
+                        <th>Fri</th>
+                        <th>Sat</th>
+                    </tr>
+                </thead>
+                <tbody>
+
+                </tbody>
+            </table>
+        </div>
+
+        
+
+        <script src="https://code.jquery.com/jquery-3.4.1.min.js"
+            integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+        <script type="module"  src="scripts/main.js"></script>
+
+    </section>
+</section>
+
+<%- include("partials/footer") %>
