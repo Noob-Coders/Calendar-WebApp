@@ -7,7 +7,7 @@ const Todo = require("./models/todo");
 const app = express();
 
 const connectString = "mongodb+srv://ankit1234:ankit1234@cluster0-glzmx.mongodb.net/test?retryWrites=true&w=majority";
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 8080;
 
 mongoose.connect(connectString, { useNewUrlParser: true, useUnifiedTopology: true}).then(() => {
     console.log("Database connected...");
