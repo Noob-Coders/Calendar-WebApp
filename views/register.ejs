@@ -1,0 +1,20 @@
+<%- include("partials/header", { stylesheet: "main.css" }) %>
+
+<div class="login-container">
+    <p><a href="/">Home</a> > Register</p>
+    <h1>Register</h1>
+    <form action="/register" method="POST">
+        <label>Email</label>
+        <input type="email" name="user[email]" placeholder="Email">
+        <label>Name</label>
+        <input type="text" name="user[name]" placeholder="Name">
+        <label>Avatar URL</label>
+        <input type="text" name="user[image]" placeholder="Avatar URL">
+        <label>Password</label>
+        <input type="password" name="user[password]" placeholder="Password">
+        <button>Register</button>
+        <p><a href="/login">Already registered</a></p>
+    </form>
+</div>
+
+<%- include("partials/footer") %>

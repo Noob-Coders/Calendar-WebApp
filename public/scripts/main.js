@@ -1,5 +1,6 @@
 import { showCalendar } from "./show_calendar.js";
 import { addCalendarControllerEvents, addDateSelectionEvents, updateSelectedDateDisplay, addTodosEvents, selectDate } from "./events.js";
+import { addMenuEvent } from "./menu.js";
 
 
 addCalendarControllerEvents();
@@ -10,4 +11,7 @@ addTodosEvents();
 showCalendar(true);
 selectDate();
 updateSelectedDateDisplay();
+
+//User menu
+addMenuEvent();
 

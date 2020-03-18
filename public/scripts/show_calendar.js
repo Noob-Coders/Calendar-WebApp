@@ -17,6 +17,8 @@ function todoOn(todoInMonth, id){
     return false;
 }
 
+console.log(todo.todoList);
+
 function showCalendar(changeSelectedDate){
     //determine the first day on the given month
     var firstDay = (new Date(selectedDate.year, selectedDate.month)).getDay();

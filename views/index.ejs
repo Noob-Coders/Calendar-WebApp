@@ -10,6 +10,7 @@
         <div class="todoContainer">
             <h3 id="selectedDateDisplay"></h3>
             <div id="todoForm">
+                <input type="time" value="00:00" id="todoTime">
                 <input type="text" placeholder="Todo item" id="todoItem">
                 <button id="addTodo">Add Todo</button>
             </div>
@@ -22,8 +23,16 @@
         <div class="head">
             <h1>Calendar</h1>
             <div class="user">
-                <span class="username"><%= userName %></span>
-                <img src="graphics/avatar-blue.svg" alt="">
+                <span class="username"><%= user.name %></span>
+                <% if(user.image) { %>
+                    <img src="<%= user.image %>" alt="">
+                <% } else { %>
+                    <img src="graphics/avatar-blue.svg" alt="">
+                <% } %>
+                <ul class="nodisplay" id="menu">
+                    <li>Profile</li>
+                    <li><a href="/logout">Logout</a></li>
+                </ul>
             </div>
         </div>
         <!-- Placeholder table for calendar -->
