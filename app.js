@@ -1,84 +1,67 @@
-const express = require("express");
-const bodyParser = require("body-parser");
-const mongoose = require("mongoose");
-const methodOverride = require("method-override");
-const User = require("./models/user");
-const Todo = require("./models/todo");
-const Login = require("./models/loggedIn");
-const app = express();
+const express = require('express'),
+      bodyParser = require('body-parser'),
+      mongoose = require('mongoose'),
+      methodOverride = require('method-override'),
+      passport = require('passport'),
+      LocalStrategy = require('passport-local'),
+      passportLocalMongoose = require('passport-local-mongoose'),
+      User = require('./models/user'),
+      Todo = require('./models/todo'),
+      app = express();
 
 const connectString = "mongodb+srv://ankit1234:ankit1234@cluster0-glzmx.mongodb.net/test?retryWrites=true&w=majority";
-const PORT = process.env.PORT || 8080;
+const PORT = process.env.PORT || 3000;
 
-mongoose.connect(connectString, { useNewUrlParser: true, useUnifiedTopology: true, useFindAndModify: false}).then(() => {
+mongoose.connect(connectString, { useNewUrlParser: true, useUnifiedTopology: true, useFindAndModify: false, useCreateIndex: true}).then(() => {
     console.log("Database connected...");
 }).catch(() => {
     console.log("Cannot connect to the database...");
 });
+
+app.use(require('express-session')({
+    secret: "Calendar app is the best",
+    resave: false,
+    saveUninitialized: false
+}));
+app.use(passport.initialize());
+app.use(passport.session());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(express.static("public"));
 app.use(methodOverride("_method"));
+
 app.set("view engine", "ejs");
 
+passport.use(new LocalStrategy(User.authenticate()));
+passport.serializeUser(User.serializeUser());
+passport.deserializeUser(User.deserializeUser());
 
 //var loggedIn = [];
 
-app.get("/", (req, res) => {
-    var ip = req.connection.remoteAddress;
-    Login.findOne({ ip: ip })
-    .then((data) => {
-        if(data)
-            res.redirect("/calendar");
-        else    
-            res.render("landing");
-    })
-    .catch(() => {
-        res.render("landing");
-    }); 
+app.get("/", isLoggedIn(true),(req, res) => {
+    res.render('landing');
 });
 
-app.get("/calendar", (req, res) => {
-    var ip = req.connection.remoteAddress;
-    Login.findOne({ ip: ip }).populate("user").exec()
-    .then((data) => {
-        if(data)
-            res.render("index", {user: data.user});
-        else    
-            res.redirect("/login");
+app.get('/calendar', isLoggedIn(), (req, res) => {
+    res.redirect('/calendar/' + req.user.username);
+})
+
+app.get("/calendar/:username", isLoggedIn(), (req, res) => {
+    User.findOne({ username: req.params.username })
+    .then((user) => {
+        res.render('index', { user: user });
     })
     .catch(() => {
-        res.redirect("/login");
-    }); 
-});
-
-app.get("/login", (req, res) => {
-    var ip = req.connection.remoteAddress;
-    Login.findOne({ ip: ip })
-    .then((data) => {
-        if(data)
-            res.redirect("/calendar");
-        else    
-            res.render("login");
-    })
-    .catch(() => {
-        res.render("login");
-    }); 
-});
-
-app.post("/login", (req, res) => {
-    User.findOne(req.body.user).then(user => {
-        if(user)
-            Login.create({ip: req.connection.remoteAddress, user: user})
-            .then(() => {
-                res.redirect("/calendar");
-            }).catch(() => {
-                res.redirect("/login");
-            });
-    }).catch(() => {
-        res.redirect("/login");
+        res.redirect('/');
     });
-    
+});
+
+app.get("/login", isLoggedIn(true) ,(req, res) => {
+    res.render('login');
+});
+
+app.post("/login", passport.authenticate('local'), (req, res) => {
+    res.redirect('/calendar/' + req.body.username);
 });
 
 app.get("/register", (req, res) => {
@@ -86,68 +69,69 @@ app.get("/register", (req, res) => {
 });
 
 app.post("/register", (req, res) => {
-    User.create(req.body.user).then(() => {
-        res.redirect("/login");
-    }).catch(() => {
-        res.redirect("/register");
+    var user = {
+        name: req.body.name,
+        email: req.body.email,
+        username: req.body.username,
+        image: req.body.image
+    };
+    User.register(new User(user), req.body.password, (err, user) => {
+        if(err){
+            console.log(err);
+            return res.redirect('/register');
+        }
+        passport.authenticate('local')(req, res, () => {
+            res.redirect('/calendar');
+        })
     });
 });
 
-
-//Temporary logout route
 app.get("/logout", (req, res) => {
-    Login.findOneAndRemove({ ip: req.connection.remoteAddress}).then(() => {
-        res.redirect("/login");
-    })
-    .catch(() => {
-        res.redirect("/login");
-    });
+    req.logout();
+    res.redirect('/');
 });
 
 app.get("/notfound", (req, res) => {
     res.render("notfound");
 });
 
-app.get("/email", (req, res) => {
-    Login.findOne({ip: req.connection.remoteAddress}).populate("user").exec()
-    .then((data) => {
-        res.send(JSON.stringify({success: true, email: data.user.email}));
-    })
-    .catch(() => {
+app.get("/username", (req, res) => {
+    if(req.user)
+        res.send(JSON.stringify({ success: true, username: req.user.username }));
+    else    
         res.send(JSON.stringify({ success: false }));
-    });
 });
 
-app.get("/todo/:email", (req, res) => {
-    var email = req.params.email;
-    User.findOne({email: email}).populate("todo").exec()
+app.get("/todo/:username", (req, res) => {
+    var username = req.params.username;
+    User.findOne({username: username}).populate("todo").exec()
     .then((user) => {
         var data = {
             success: true,
-            email: email,
+            username: username,
             todo: user.todo
         };
         res.send(JSON.stringify(data));
     })
     .catch((err) => {
-        res.send(JSON.stringify({ success: false, email: email }));
+        res.send(JSON.stringify({ success: false, username: username }));
     })
 });
 
 //Todo NEW Route
 app.post("/todo", (req, res) => {
-    var email = req.body.email;
+    var username = req.body.username;
     var newTodo = req.body.newTodo;
     Todo.create(newTodo)
     .then((todo) => {
-        User.findOne({ email: email })
+        User.findOne({ username: username })
         .then((user) => {
             user.todo.push(todo);
             user.save().then(() => {
                 User.findById(user._id).populate("todo").exec().then((savedUser) => {
                     var data = {
                         success: true,
-                        email: email,
+                        username: username,
                         todo: savedUser.todo
                     }
                     res.send(JSON.stringify(data));
@@ -169,11 +153,11 @@ app.post("/todo", (req, res) => {
 
 //Todo DELETE Route
 app.delete("/todo", (req, res) => {
-    var email = req.body.email;
+    var username = req.body.username;
     var todoId = req.body.todoId;
     Todo.findByIdAndDelete(todoId)
     .then(() => {
-        User.findOne({email: email})
+        User.findOne({username: username})
         .then((user) => {
             var index = -1;
             for(var i=0; i<user.todo.length; i++){
@@ -186,11 +170,11 @@ app.delete("/todo", (req, res) => {
                 user.todo.splice(index, 1);
             user.save()
             .then(() => {
-                User.findOne({ email: email }).populate("todo").exec()
+                User.findOne({ username: username }).populate("todo").exec()
                 .then((savedUser) => {
                     var data = {
                         success: true, 
-                        email: email, 
+                        username: username, 
                         todo: savedUser.todo
                     }
                     res.send(JSON.stringify(data));
@@ -214,7 +198,19 @@ app.get("*", (req, res) => {
     res.redirect("/notfound");
 });
 
+function isLoggedIn(flag) {
+    return (req, res, next) => {
+        if(flag){
+            if(req.isAuthenticated())
+                res.redirect('/calendar');
+            return next();
+        }
+        if(req.isAuthenticated())
+            return next();
+        res.redirect('/login');
+    }
+}
 
-app.listen(PORT, "192.168.2.249", () => {
+app.listen(PORT, () => {
     console.log("Server started visit: http://localhost:3000/");
 });

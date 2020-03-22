@@ -6,7 +6,7 @@ import { selectDate } from "./events.js";
 //TODO move todo to the database during Backend phase
 class Todo{
     constructor(){
-        this.email;
+        this.username;
         this.todoList = [];
         this.addTodo = (id, content, time) => {
             var todoItem = {
@@ -21,7 +21,7 @@ class Todo{
             fetch("/todo", {
                 method: "POST",
                 body: JSON.stringify({
-                    email: this.email, 
+                    username: this.username, 
                     newTodo: todoItem
                 }),
                 headers: {'Content-Type': 'application/json'}
@@ -41,7 +41,7 @@ class Todo{
             fetch("/todo?_method=DELETE", {
                 method: "POST",
                 body: JSON.stringify({
-                    email: this.email, 
+                    username: this.username, 
                     todoId: this.todoList[index]._id
                 }),
                 headers: {'Content-Type': 'application/json'}   
@@ -74,18 +74,18 @@ class Todo{
 
 
 var fetchTodo = (todo) => {
-    var email;
-    fetch("/email")
+    var username;
+    fetch("/username")
     .then( res => {
         return res.json();
     })
     .then( data => {
         if(data.success)
-            email = data.email;
-        todo.email = email;
+            username = data.username;
+        todo.username = username;
 
-        if(email)
-            fetch("/todo/" + email)
+        if(username)
+            fetch("/todo/" + username)
             .then( res => {
                 return res.json()
             })
