@@ -5,13 +5,15 @@
     <h1>Register</h1>
     <form action="/register" method="POST">
         <label>Email</label>
-        <input type="email" name="user[email]" placeholder="Email">
+        <input type="email" name="email" placeholder="Email">
         <label>Name</label>
-        <input type="text" name="user[name]" placeholder="Name">
-        <label>Avatar URL</label>
-        <input type="text" name="user[image]" placeholder="Avatar URL">
+        <input type="text" name="name" placeholder="Name">
+        <label>Username</label>
+        <input type="text" name="username" placeholder="Username">
+        <label>Avatar URL(Optional)</label>
+        <input type="text" name="image" placeholder="Avatar URL">
         <label>Password</label>
-        <input type="password" name="user[password]" placeholder="Password">
+        <input type="password" name="password" placeholder="Password">
         <button>Register</button>
         <p><a href="/login">Already registered</a></p>
     </form>
