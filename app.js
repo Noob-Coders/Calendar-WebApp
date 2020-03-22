@@ -4,12 +4,13 @@ const mongoose = require("mongoose");
 const methodOverride = require("method-override");
 const User = require("./models/user");
 const Todo = require("./models/todo");
+const Login = require("./models/loggedIn");
 const app = express();
 
 const connectString = "mongodb+srv://ankit1234:ankit1234@cluster0-glzmx.mongodb.net/test?retryWrites=true&w=majority";
 const PORT = process.env.PORT || 8080;
 
-mongoose.connect(connectString, { useNewUrlParser: true, useUnifiedTopology: true}).then(() => {
+mongoose.connect(connectString, { useNewUrlParser: true, useUnifiedTopology: true, useFindAndModify: false}).then(() => {
     console.log("Database connected...");
 }).catch(() => {
     console.log("Cannot connect to the database...");
@@ -21,53 +22,59 @@ app.use(methodOverride("_method"));
 app.set("view engine", "ejs");
 
 
-
-var loggedIn = [], index;
+//var loggedIn = [];
 
 app.get("/", (req, res) => {
-    var responded = false;
     var ip = req.connection.remoteAddress;
-    loggedIn.forEach((userInfo) => {
-        if(userInfo.ip === ip){
+    Login.findOne({ ip: ip })
+    .then((data) => {
+        if(data)
             res.redirect("/calendar");
-            responded = true;
-        }
-    });
-    if(!responded)
+        else    
+            res.render("landing");
+    })
+    .catch(() => {
         res.render("landing");
+    }); 
 });
 
 app.get("/calendar", (req, res) => {
-    var responded = false;
     var ip = req.connection.remoteAddress;
-    loggedIn.forEach((userInfo) => {
-        if(userInfo.ip === ip){
-            res.render("index", { user: userInfo.user});
-            responded = true;
-        }
-    });
-    if(!responded)
+    Login.findOne({ ip: ip }).populate("user").exec()
+    .then((data) => {
+        if(data)
+            res.render("index", {user: data.user});
+        else    
+            res.redirect("/login");
+    })
+    .catch(() => {
         res.redirect("/login");
+    }); 
 });
 
 app.get("/login", (req, res) => {
-    var responded = false;
     var ip = req.connection.remoteAddress;
-    loggedIn.forEach((userInfo) => {
-        if(userInfo.ip === ip){
+    Login.findOne({ ip: ip })
+    .then((data) => {
+        if(data)
             res.redirect("/calendar");
-            responded = true;
-        }
-    });
-    if(!responded)
+        else    
+            res.render("login");
+    })
+    .catch(() => {
         res.render("login");
+    }); 
 });
 
 app.post("/login", (req, res) => {
     User.findOne(req.body.user).then(user => {
         if(user)
-            loggedIn.push({ ip: req.connection.remoteAddress, user: user });
-        res.redirect("/calendar");
+            Login.create({ip: req.connection.remoteAddress, user: user})
+            .then(() => {
+                res.redirect("/calendar");
+            }).catch(() => {
+                res.redirect("/login");
+            });
     }).catch(() => {
         res.redirect("/login");
     });
@@ -89,19 +96,12 @@ app.post("/register", (req, res) => {
 
 //Temporary logout route
 app.get("/logout", (req, res) => {
-    var index = -1;
-    for(var i=0;i<loggedIn.length;i++){
-        
-        if(req.connection.remoteAddress === loggedIn[i].ip){
-            index = i;
-            break;
-        }
-    }
-    console.log(index);
-    if(index > -1)
-        loggedIn.splice(index, 1);
-
-    res.redirect("/login");
+    Login.findOneAndRemove({ ip: req.connection.remoteAddress}).then(() => {
+        res.redirect("/login");
+    })
+    .catch(() => {
+        res.redirect("/login");
+    });
 });
 
 app.get("/notfound", (req, res) => {
@@ -109,15 +109,13 @@ app.get("/notfound", (req, res) => {
 });
 
 app.get("/email", (req, res) => {
-    var responded = false;
-    loggedIn.forEach((data) => {
-        if(req.connection.remoteAddress === data.ip){
-            responded = true;
-            res.send(JSON.stringify({ email: data.user.email, success: true }));
-        }
-    });
-    if(!responded)
+    Login.findOne({ip: req.connection.remoteAddress}).populate("user").exec()
+    .then((data) => {
+        res.send(JSON.stringify({success: true, email: data.user.email}));
+    })
+    .catch(() => {
         res.send(JSON.stringify({ success: false }));
+    });
 });
 
 app.get("/todo/:email", (req, res) => {
@@ -216,7 +214,7 @@ app.get("*", (req, res) => {
     res.redirect("/notfound");
 });
 
-//Todolist APIs
-app.listen(PORT, () => {
+
+app.listen(PORT, "192.168.2.249", () => {
     console.log("Server started visit: http://localhost:3000/");
 });
