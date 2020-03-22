@@ -61,6 +61,7 @@ function addDateSelectionEvents(){
 function addTodosEvents(){
     var addTodo = document.querySelector("#addTodo");
     var todoItem = document.querySelector("#todoItem");
+    var todoTime = document.querySelector("#todoTime");
     var todoList = document.querySelector("#todoListDisplay");
 
     function newTodo(){
@@ -68,11 +69,12 @@ function addTodosEvents(){
             var id = `date${selectedDate.date}${selectedDate.month}${selectedDate.year}`;
             var dot = "<span class='dot'></span>";
             var dateCell = document.querySelector("." + id);
-            todo.addTodo(id, todoItem.value);
+            todo.addTodo(id, todoItem.value, todoTime.value);
             if(dateCell.innerHTML.indexOf(dot) === -1){
                 dateCell.innerHTML += dot;
             }
             todoItem.value = "";
+            todoTime.value = "00:00";
             todo.updateTodoDisplay();
         }
     }
