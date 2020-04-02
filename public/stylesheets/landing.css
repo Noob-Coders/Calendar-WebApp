@@ -69,3 +69,39 @@ p{
     line-height: 1.3em;
 }
 
+@media (max-width: 960px){
+    .wave{
+        display: none;
+    }
+
+    .container{
+        width: 90%;
+    }
+}
+
+@media (max-width: 800px){
+    .container .graphics img{
+        margin-top: 100px;
+        align-self: center;
+    }
+}
+
+@media (max-width: 700px){
+
+    .container{
+        grid-template-columns: 1fr;
+    }
+
+    .container .main{
+        padding: 10px;
+    }
+
+    .container .graphics img{
+        display: none;
+    }
+
+    .wave2{
+        width: 100%;
+    }
+}
+

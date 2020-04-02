@@ -37,6 +37,23 @@ class Todo{
             //TODO make a get request and receive updated todoList from the server
             //this.todoList.push(todoItem);
         };
+        this.toggleTodo = (index) =>{
+            fetch("/todo?_method=PUT", {
+                method: "POST",
+                body: JSON.stringify({
+                    todoId: this.todoList[index]._id
+                }),
+                headers: {'Content-type': 'application/json'}
+            })
+            .then(res => {
+                return res.json();
+            }).then(data => {
+                if(data.success){
+                    this.todoList[index].done = !this.todoList[index].done;
+                    this.updateTodoDisplay();
+                }
+            });
+        };
         this.deleteTodo = (index) => {
             fetch("/todo?_method=DELETE", {
                 method: "POST",
@@ -62,9 +79,14 @@ class Todo{
         }
         this.updateTodoDisplay = () => {
             todoListDisplay.innerHTML = "";
+            var done;
             this.todoList.forEach((todo, index) => {
                 if(todo.date === selectedDate.date && todo.month === selectedDate.month && todo.year === selectedDate.year){
-                    todoListDisplay.innerHTML += `<li><span class="deleteTodo"><i class="fas fa-times"></i><span class="nodisplay">${index}</span></span><span class="time">${todo.time}</span> ${todo.content}</li>`;
+                    if(todo.done)
+                        done = 'class = "done"';
+                    else
+                        done = '';
+                    todoListDisplay.innerHTML += `<li><span class="deleteTodo"><i class="fas fa-times"></i><span class="nodisplay">${index}</span></span><span class="time">${todo.time}</span><span ${done} >${todo.content}</span></li>`;
                 }
             });
         };

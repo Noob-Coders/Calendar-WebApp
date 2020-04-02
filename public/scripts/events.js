@@ -97,6 +97,11 @@ function addTodosEvents(){
         selectDate(selectedDate.date, selectedDate.month, selectedDate.year);
     });
 
+    $("#todoListDisplay").on("click", "li", function() {
+        console.log(this.childNodes[0].childNodes[1].textContent);
+        todo.toggleTodo(Number(this.childNodes[0].childNodes[1].textContent));
+        todo.updateTodoDisplay();
+    });
 
 }
 
