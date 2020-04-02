@@ -390,7 +390,7 @@ td.todohere{
 
 @media (max-width: 960px){
     html, body{
-        height: 100%;
+        height: 100vh;
     }
 
     .main{
@@ -441,6 +441,7 @@ td.todohere{
     }
 }
 
+/*
 @media (max-height: 600px){
     .main{
         display: none;
@@ -450,7 +451,7 @@ td.todohere{
         display: block;
     }
 }
-
+*/
 .flash{
     position: fixed;
     opacity: 1;
